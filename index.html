@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>Hayat - Minimalist Müzik Deneyimi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Özel CSS Dosyası -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- İNTRO EKRANI -->
+    <div id="introScreen">
+        <div class="intro-content">
+            <div class="relative w-64 h-64 rounded-full overflow-hidden floating-avatar shadow-2xl">
+                <img src="https://files.catbox.moe/5rhlb0.jpeg" alt="Intro" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </div>
+
+    <!-- ONLINE / OFFLINE H1 BAŞLIĞI -->
+    <h1 id="networkHeading">
+        <div id="networkDot" class="w-2 h-2 rounded-full transition-all duration-300"></div>
+        <span id="networkText" class="text-xs font-semibold tracking-tight text-zinc-200"></span>
+    </h1>
+
+    <!-- ANA UYGULAMA KONTEYNERİ -->
+    <div id="appContainer" class="app-container">
+        <!-- Sağ Üst Arama Butonu -->
+        <button onclick="onSearchButtonClicked()" class="absolute top-6 right-6 h-[38px] px-3 rounded-xl glass-btn text-zinc-200 cursor-pointer z-40 flex items-center justify-center shadow-lg" style="touch-action: manipulation;">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+            </svg>
+        </button>
+
+        <!-- Sanatçı Ekranı -->
+        <div id="artistScreen" class="screen">
+            <div class="absolute top-20 z-35 flex flex-col items-center text-center p-3">
+                <div class="w-36 h-36 rounded-full overflow-hidden mb-3 flex items-center justify-center shadow-lg floating-avatar">
+                    <img id="artistAvatar" src="" alt="Sanatçı" class="w-full h-full object-cover">
+                </div>
+                <h1 id="artistHeaderTitle" class="text-sm font-bold uppercase tracking-wider text-zinc-300 px-3 py-1">Sanatçı Seçin</h1>
+            </div>
+
+            <div id="artistWheelArea" class="absolute top-1/2 -translate-y-1/2 w-full max-w-7xl h-44 flex items-center justify-center cursor-grab active:cursor-grabbing touch-none z-20 overflow-hidden rounded-2xl">
+                <div class="absolute top-0 inset-x-0 h-10 bg-gradient-to-b from-[#000000] to-transparent pointer-events-none z-25"></div>
+                <div class="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-[#000000] to-transparent pointer-events-none z-25"></div>
+                <div id="artistList" class="relative w-full h-full flex items-center justify-center"></div>
+            </div>
+
+            <div class="absolute top-1/2 -translate-y-1/2 w-[98%] max-w-7xl h-20 pointer-events-none z-30 flex items-center justify-end px-4">
+                <div class="absolute inset-x-4 h-[52px] bg-zinc-100/[0.03] border border-zinc-800/50 rounded-2xl pointer-events-none shadow-sm"></div>
+                <button onclick="onArtistSelected()" class="action-button">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Şarkı Ekranı -->
+        <div id="songScreen" class="screen">
+            <button onclick="goToArtistScreen()" class="absolute top-6 left-6 h-[38px] px-3 rounded-xl glass-btn text-zinc-200 cursor-pointer z-40 flex items-center justify-center" style="touch-action: manipulation;">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m7 7-7-7 7-7"/>
+                </svg>
+            </button>
+
+            <div class="absolute top-20 z-35 flex flex-col items-center text-center p-3">
+                <div id="profileAvatarContainer" class="w-36 h-36 rounded-full overflow-hidden mb-3 flex items-center justify-center shadow-lg floating-avatar">
+                    <img id="songArtistAvatar" src="" alt="Sanatçı" class="w-full h-full object-cover">
+                </div>
+                <h1 id="selectedArtistTitle" class="text-sm font-bold uppercase tracking-wider text-zinc-300 px-3 py-1">Şarkı Seçin</h1>
+            </div>
+
+            <div id="songWheelArea" class="absolute top-1/2 -translate-y-1/2 w-full max-w-7xl h-44 flex items-center justify-center cursor-grab active:cursor-grabbing touch-none z-20 overflow-hidden rounded-2xl">
+                <div class="absolute top-0 inset-x-0 h-10 bg-gradient-to-b from-[#000000] to-transparent pointer-events-none z-25"></div>
+                <div class="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-[#000000] to-transparent pointer-events-none z-25"></div>
+                <div id="songList" class="relative w-full h-full flex items-center justify-center"></div>
+            </div>
+
+            <div class="absolute top-1/2 -translate-y-1/2 w-[98%] max-w-7xl h-20 pointer-events-none z-50 flex items-center justify-end px-4">
+                <div class="absolute inset-x-4 h-[52px] bg-zinc-100/[0.03] border border-zinc-800/50 rounded-2xl pointer-events-none shadow-sm"></div>
+                <button id="playPauseActionBtn" onclick="onSongActionClicked()" class="action-button">
+                    <div id="actionBtnIcon" class="flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5.14v13.72a1 1 0 001.5.86l11-6.86a1 1 0 000-1.72l-11-6.86a1 1 0 00-1.5.86z"/>
+                        </svg>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ALT MİNİ PLAYER -->
+    <div id="bottomMiniPlayer" class="bottom-mini-player">
+        <div class="flex items-center gap-3 overflow-hidden pl-1 flex-grow">
+            <img id="miniPlayerImg" src="" class="w-[54px] h-[54px] rounded-[14px] object-cover flex-shrink-0 shadow-sm">
+            <div class="flex flex-col overflow-hidden text-left leading-tight">
+                <span id="miniPlayerSongTitle" class="text-[15px] font-bold text-white truncate tracking-tight"></span>
+                <span id="miniPlayerArtistTitle" class="text-[13px] font-normal text-zinc-400 truncate mt-0.5"></span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 flex-shrink-0 pr-1">
+            <button id="miniPrevBtn" onclick="playPrevSong()" class="w-9 h-9 rounded-full text-zinc-300 flex items-center justify-center hover:bg-white/15 active:scale-90 transition-all cursor-pointer" title="Önceki Şarkı">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button id="miniPlayBtn" class="w-[46px] h-[46px] rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-90 transition-all cursor-pointer shadow-md">
+                <div id="miniPlayerPlayIcon" class="w-full h-full flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5.14v13.72a1 1 0 001.5.86l11-6.86a1 1 0 000-1.72l-11-6.86a1 1 0 00-1.5.86z"/>
+                    </svg>
+                </div>
+            </button>
+            <button id="miniNextBtn" onclick="playNextSong()" class="w-9 h-9 rounded-full text-zinc-300 flex items-center justify-center hover:bg-white/15 active:scale-90 transition-all cursor-pointer" title="Sonraki Şarkı">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Dosyası -->
+    <script src="script.js"></script>
+</body>
+</html>
